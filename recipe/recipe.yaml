@@ -1,5 +1,5 @@
 context:
-  version: "3.8.0"
+  version: "3.8.1"
 
 package:
   name: html-to-markdown-cli
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/kreuzberg-dev/html-to-markdown/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 75066e2425b0c7b6af1fb420aa163f9230aaa58020226ac19e7d2d61480e01ac
+  sha256: f1e206f6157215c6c596961e36993c09ff983b56e4b497c9c47323f6f5f63283
 
 build:
   number: 0
