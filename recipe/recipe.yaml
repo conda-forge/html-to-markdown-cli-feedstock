@@ -16,33 +16,22 @@ build:
       AWS_LC_SYS_CMAKE_BUILDER: ${{ "1" if win else "0" }} # force CMake builder for `aws-lc-sys` native C/C++ code on Windows
       CARGO_PROFILE_RELEASE_LTO: fat
       CARGO_PROFILE_RELEASE_STRIP: symbols
+    interpreter: nu
     content:
+      - let prefix = $env.LIBRARY_PREFIX? | default $env.PREFIX
+      # build main app and generate license data
       - cd crates/html-to-markdown-cli
-      - if: unix
-        then:
-          - cargo auditable install --path=. --root="$PREFIX" --no-track --locked --bins
-          # generate manpage and shell completions
-          - if: build_platform == host_platform
-            then:
-              - mkdir -p "$PREFIX"/share/man/man1 "$PREFIX"/share/bash-completion/completions "$PREFIX"/share/fish/vendor_completions.d "$PREFIX"/share/zsh/site-functions
-              - '"$PREFIX"/bin/html-to-markdown --generate-man             > "$PREFIX"/share/man/man1/html-to-markdown.1'
-              - '"$PREFIX"/bin/html-to-markdown --generate-completion bash > "$PREFIX"/share/bash-completion/completions/html-to-markdown'
-              - '"$PREFIX"/bin/html-to-markdown --generate-completion fish > "$PREFIX"/share/fish/vendor_completions.d/html-to-markdown.fish'
-              - '"$PREFIX"/bin/html-to-markdown --generate-completion zsh  > "$PREFIX"/share/zsh/site-functions/_html-to-markdown'
-        else:
-          - cargo auditable install --path=. --root="%LIBRARY_PREFIX%" --no-track --locked --bins
-          # generate manpage and shell completions
-          - if: build_platform == host_platform
-            then:
-              - mkdir "%LIBRARY_PREFIX%"\share\man\man1
-              - mkdir "%LIBRARY_PREFIX%"\share\bash-completion\completions
-              - mkdir "%LIBRARY_PREFIX%"\share\fish\vendor_completions.d
-              - mkdir "%LIBRARY_PREFIX%"\share\zsh\site-functions
-              - '"%LIBRARY_BIN%"\html-to-markdown.exe --generate-man             > "%LIBRARY_PREFIX%"\share\man\man1\html-to-markdown.1'
-              - '"%LIBRARY_BIN%"\html-to-markdown.exe --generate-completion bash > "%LIBRARY_PREFIX%"\share\bash-completion\completions\html-to-markdown'
-              - '"%LIBRARY_BIN%"\html-to-markdown.exe --generate-completion fish > "%LIBRARY_PREFIX%"\share\fish\vendor_completions.d\html-to-markdown.fish'
-              - '"%LIBRARY_BIN%"\html-to-markdown.exe --generate-completion zsh  > "%LIBRARY_PREFIX%"\share\zsh\site-functions\_html-to-markdown'
+      - cargo auditable install --path=. --root=($prefix) --no-track --locked --bins
       - cargo-bundle-licenses --format=yaml --output=../../THIRDPARTY.yml
+      # generate shell completions
+      - if: build_platform == host_platform
+        then:
+          - mkdir ($prefix)/share/man/man1 ($prefix)/share/bash-completion/completions ($prefix)/share/fish/vendor_completions.d ($prefix)/share/zsh/site-functions
+          - let bin = ($prefix)/bin/html-to-markdown
+          - ^$bin --generate-man             | save ($prefix)/share/man/man1/html-to-markdown.1
+          - ^$bin --generate-completion bash | save ($prefix)/share/bash-completion/completions/html-to-markdown
+          - ^$bin --generate-completion fish | save ($prefix)/share/fish/vendor_completions.d/html-to-markdown.fish
+          - ^$bin --generate-completion zsh  | save ($prefix)/share/zsh/site-functions/_html-to-markdown
 
 requirements:
   build:
@@ -51,6 +40,7 @@ requirements:
     - ${{ compiler('rust') }}
     - cargo-auditable
     - cargo-bundle-licenses
+    - nushell
     - if: win
       then: cmake
 
