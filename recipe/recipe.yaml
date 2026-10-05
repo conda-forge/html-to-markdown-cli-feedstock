@@ -13,7 +13,7 @@ build:
   number: 0
   script:
     env:
-      AWS_LC_SYS_CMAKE_BUILDER: ${{ "1" if win else "0" }} # force CMake builder for `aws-lc-sys` native C/C++ code on Windows
+      AWS_LC_SYS_CMAKE_BUILDER: "1" # force CMake builder for `aws-lc-sys` native C/C++ code
       CARGO_PROFILE_RELEASE_LTO: fat
       CARGO_PROFILE_RELEASE_STRIP: symbols
     interpreter: nu
@@ -40,9 +40,8 @@ requirements:
     - ${{ compiler('rust') }}
     - cargo-auditable
     - cargo-bundle-licenses
+    - cmake
     - nushell
-    - if: win
-      then: cmake
 
 tests:
   - script:
