@@ -3,13 +3,13 @@ About html-to-markdown-cli-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/html-to-markdown-cli-feedstock/blob/main/LICENSE.txt)
 
-Home: https://docs.html-to-markdown.kreuzberg.dev/
+Home: https://docs.html-to-markdown.xberg.io/
 
 Package license: MIT
 
 Summary: A fast, powerful HTML to Markdown converter
 
-Development: https://github.com/kreuzberg-dev/html-to-markdown
+Development: https://github.com/xberg-io/html-to-markdown
 
 Command-line interface for html-to-markdown, a high-performance
 HTML to Markdown converter with comprehensive customization options.
