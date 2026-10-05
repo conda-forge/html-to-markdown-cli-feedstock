@@ -42,6 +42,8 @@ requirements:
     - cargo-bundle-licenses
     - cmake
     - nushell
+    - if: unix
+      then: make
 
 tests:
   - script:
