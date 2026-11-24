@@ -1,5 +1,5 @@
 context:
-  version: "3.23.1"
+  version: "3.23.2"
 
 package:
   name: html-to-markdown-cli
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/xberg-io/html-to-markdown/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 4160c4226a3fe776edee0f2cff5e05db7425343f35f902637ead958b95773fe3
+  sha256: 31b8a1b5154e07dc7209bae189922f9828854fb2578a494a3a73115c6d428065
 
 build:
   number: 0
